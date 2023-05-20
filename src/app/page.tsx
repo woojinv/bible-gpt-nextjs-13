@@ -9,7 +9,17 @@ export default function Home() {
     async function handleSubmit(e: { preventDefault: () => void }) {
         e.preventDefault();
         try {
-            // const response = await fetch('');
+            const response = await fetch('/api', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    passage: passageInput,
+                    question: questionInput,
+                }),
+            });
+            console.log(response, '<<< response');
         } catch (err) {}
     }
 
