@@ -19,7 +19,6 @@ export async function OpenAIStream(payload: OpenAIStreamPayload) {
 
     let counter = 0;
 
-    // const completion = await openai.createChatCompletion(payload);
     const completion = await fetch('https://api.openai.com/v1/chat/completions', {
         headers: {
             'Content-Type': 'application/json',

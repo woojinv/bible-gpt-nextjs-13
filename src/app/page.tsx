@@ -49,15 +49,15 @@ export default function Home() {
     return (
         <main>
             <div className="flex flex-col items-center my-12">
-                <h1>BibleGPT</h1>
-                <form onSubmit={handleSubmit} className="text-center">
+                <h1 className="text-5xl">BibleGPT</h1>
+                <form onSubmit={handleSubmit} className="text-center my-4">
                     <input
                         required
                         type="text"
                         name="passage"
                         placeholder="Enter a Passage"
                         value={passageInput}
-                        className="text-black block"
+                        className="text-black block mb-2"
                         onChange={(e) => {
                             setPassageInput(e.target.value);
                         }}
