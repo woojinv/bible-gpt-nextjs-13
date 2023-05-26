@@ -38,7 +38,6 @@ export default function Home() {
                 const { value, done: doneReading } = await reader.read();
                 done = doneReading;
                 const chunkValue = decoder.decode(value);
-                console.log(chunkValue, '<<< chunkValue');
                 setAnswer((prev) => prev + chunkValue);
             }
 
