@@ -28,7 +28,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     ];
 
     const payload: OpenAIStreamPayload = {
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4',
         messages,
         stream: true,
     };
