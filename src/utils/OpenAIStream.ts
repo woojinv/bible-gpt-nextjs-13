@@ -61,7 +61,6 @@ export async function OpenAIStream(payload: OpenAIStreamPayload) {
             const parser = createParser(onParse);
             // https://web.dev/streams/#asynchronous-iteration
             for await (const chunk of completion.data as any) {
-                console.log(typeof chunk, '<<< type');
                 parser.feed(chunk);
             }
         },
