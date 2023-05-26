@@ -46,7 +46,7 @@ export default function Home() {
     }
 
     return (
-        <main>
+        <main className="prose">
             <div className="flex flex-col items-center my-12">
                 <h1 className="text-5xl">BibleGPT</h1>
                 <form onSubmit={handleSubmit} className="text-center my-4">
