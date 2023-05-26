@@ -46,17 +46,17 @@ export default function Home() {
     }
 
     return (
-        <main className="prose">
-            <div className="flex flex-col items-center my-12">
-                <h1 className="text-5xl">BibleGPT</h1>
-                <form onSubmit={handleSubmit} className="text-center my-4">
+        <main className="text-center px-5 bg-slate-800 h-screen">
+            <div className="prose sticky top-0 h-72 bg-slate-800 pt-10">
+                <h1>BibleGPT</h1>
+                <form onSubmit={handleSubmit} className="">
                     <input
                         required
                         type="text"
                         name="passage"
                         placeholder="Enter a Passage"
                         value={passageInput}
-                        className="text-black block mb-2"
+                        className="input input-bordered w-full max-w-xs mb-3 text-center"
                         onChange={(e) => {
                             setPassageInput(e.target.value);
                         }}
@@ -67,14 +67,17 @@ export default function Home() {
                         name="question"
                         placeholder="Enter a question"
                         value={questionInput}
-                        className="text-black block"
+                        className="input input-bordered w-full max-w-xs mb-3 text-center"
                         onChange={(e) => {
                             setQuestionInput(e.target.value);
                         }}
                     />
-                    <input type="submit" value="Submit" />
+                    <input type="submit" value="Submit" className="btn" />
                 </form>
-                <p>
+            </div>
+
+            <div className="">
+                <p className="mt-2">
                     {answer}
                     {loading && '...'}
                 </p>
