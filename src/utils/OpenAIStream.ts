@@ -27,7 +27,6 @@ export async function OpenAIStream(payload: OpenAIStreamPayload) {
     let counter = 0;
 
     const completion = await openai.createChatCompletion(payload);
-    // console.log(completion, '<<< completion');
 
     const stream = new ReadableStream({
         async start(controller) {
@@ -61,14 +60,12 @@ export async function OpenAIStream(payload: OpenAIStreamPayload) {
             // this ensures we properly read chunks and invoke an event for each SSE event stream
             const parser = createParser(onParse);
             // https://web.dev/streams/#asynchronous-iteration
-            console.log(completion.data, '<<< completion.data');
             for await (const chunk of completion.data as any) {
-                console.log(chunk, '<<< chunk');
-                parser.feed(decoder.decode(chunk));
+                console.log(typeof chunk, '<<< type');
+                parser.feed(chunk);
             }
         },
     });
-    console.log(stream, '<<< stream');
 
     return stream;
 }

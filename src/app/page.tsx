@@ -3,11 +3,15 @@
 import { useState } from 'react';
 
 export default function Home() {
+    const [loading, setLoading] = useState(false);
     const [passageInput, setPassageInput] = useState('');
     const [questionInput, setQuestionInput] = useState('');
+    const [answer, setAnswer] = useState('');
 
     async function handleSubmit(e: { preventDefault: () => void }) {
         e.preventDefault();
+        setAnswer('');
+        setLoading(true);
         try {
             const response = await fetch('/api', {
                 method: 'POST',
@@ -19,7 +23,26 @@ export default function Home() {
                     question: questionInput,
                 }),
             });
-            console.log(response, '<<< response');
+
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            const data = response.body;
+            if (!data) return;
+
+            const reader = data.getReader();
+            const decoder = new TextDecoder();
+            let done = false;
+
+            while (!done) {
+                const { value, done: doneReading } = await reader.read();
+                done = doneReading;
+                const chunkValue = decoder.decode(value);
+                console.log(chunkValue, '<<< chunkValue');
+                setAnswer((prev) => prev + chunkValue);
+            }
+
+            setLoading(false);
         } catch (err) {}
     }
 
