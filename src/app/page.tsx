@@ -75,7 +75,10 @@ export default function Home() {
                     />
                     <input type="submit" value="Submit" />
                 </form>
-                <p>{answer}</p>
+                <p>
+                    {answer}
+                    {loading && '...'}
+                </p>
             </div>
         </main>
     );

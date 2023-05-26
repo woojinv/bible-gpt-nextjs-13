@@ -9,9 +9,6 @@ export const runtime = 'edge';
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
     const { passage, question } = await req.json();
-    console.log(passage, '<<< passage');
-    console.log(question, '<<< question');
-
     const messages: chatGPTMessage[] = [
         {
             role: 'system',

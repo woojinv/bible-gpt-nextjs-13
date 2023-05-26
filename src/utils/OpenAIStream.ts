@@ -46,7 +46,6 @@ export async function OpenAIStream(payload: OpenAIStreamPayload) {
                             // this is a prefix character (i.e., "\n\n"), do nothing
                             return;
                         }
-                        console.log(text, '<<< text');
                         const queue = encoder.encode(text);
                         controller.enqueue(queue);
                         counter++;
