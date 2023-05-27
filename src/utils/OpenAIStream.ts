@@ -1,17 +1,5 @@
 import { createParser, ParsedEvent, ReconnectInterval } from 'eventsource-parser';
-
-export type ChatGPTAgent = 'user' | 'system';
-
-export interface chatGPTMessage {
-    role: ChatGPTAgent;
-    content: string;
-}
-
-export interface OpenAIStreamPayload {
-    model: string;
-    messages: chatGPTMessage[];
-    stream: boolean;
-}
+import { OpenAIStreamPayload } from '@/app/api/route';
 
 export async function OpenAIStream(payload: OpenAIStreamPayload) {
     const encoder = new TextEncoder();
@@ -19,6 +7,8 @@ export async function OpenAIStream(payload: OpenAIStreamPayload) {
 
     let counter = 0;
 
+    // fetch used instead of openai module.
+    // openai module uses axios which is unsupported on Edge.
     const completion = await fetch('https://api.openai.com/v1/chat/completions', {
         headers: {
             'Content-Type': 'application/json',

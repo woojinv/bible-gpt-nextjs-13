@@ -1,11 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { OpenAIStream, OpenAIStreamPayload, chatGPTMessage } from '@/utils/OpenAIStream';
+
+import { OpenAIStream } from '@/utils/OpenAIStream';
 
 if (!process.env.OPENAI_API_KEY) {
     throw new Error('Missing env var from OpenAI');
 }
 
 export const runtime = 'edge';
+
+// interfaces
+export type ChatGPTAgent = 'user' | 'system';
+
+export interface chatGPTMessage {
+    role: ChatGPTAgent;
+    content: string;
+}
+
+export interface OpenAIStreamPayload {
+    model: string;
+    messages: chatGPTMessage[];
+    stream: boolean;
+}
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
     const { passage, question } = await req.json();
