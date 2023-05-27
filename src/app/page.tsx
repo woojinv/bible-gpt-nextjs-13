@@ -46,17 +46,17 @@ export default function Home() {
     }
 
     return (
-        <main className="text-center px-5 bg-slate-800 h-screen">
-            <div className="prose sticky top-0 h-72 bg-slate-800 pt-10">
-                <h1>BibleGPT</h1>
-                <form onSubmit={handleSubmit} className="">
+        <main className="h-screen overflow-y-scroll bg-slate-800 px-5 text-center">
+            <div className="prose">
+                <h1 className="mt-10">BibleGPT</h1>
+                <form onSubmit={handleSubmit} className="mb-5">
                     <input
                         required
                         type="text"
                         name="passage"
                         placeholder="Enter a Passage"
                         value={passageInput}
-                        className="input input-bordered w-full max-w-xs mb-3 text-center"
+                        className="input-bordered input mb-3 w-full max-w-xs text-center"
                         onChange={(e) => {
                             setPassageInput(e.target.value);
                         }}
@@ -67,7 +67,7 @@ export default function Home() {
                         name="question"
                         placeholder="Enter a question"
                         value={questionInput}
-                        className="input input-bordered w-full max-w-xs mb-3 text-center"
+                        className="input-bordered input mb-3 w-full max-w-xs text-center"
                         onChange={(e) => {
                             setQuestionInput(e.target.value);
                         }}
@@ -77,7 +77,7 @@ export default function Home() {
             </div>
 
             <div className="">
-                <p className="mt-2">
+                <p className="prose">
                     {answer}
                     {loading && '...'}
                 </p>
