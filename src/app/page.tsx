@@ -76,7 +76,7 @@ export default function Home() {
                 </form>
 
                 <div>
-                    <p className="text-slate-400">
+                    <p className="text-slate-400 pb-5">
                         {answer}
                         {loading && '▋'}
                     </p>
