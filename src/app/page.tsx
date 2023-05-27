@@ -47,16 +47,16 @@ export default function Home() {
 
     return (
         <main className="h-screen overflow-y-scroll bg-slate-800 px-5 text-center">
-            <div className="prose">
-                <h1 className="mt-10">BibleGPT</h1>
-                <form onSubmit={handleSubmit} className="mb-5">
+            <div className="mx-auto max-w-xs">
+                <h1 className="mb-5 mt-10 text-5xl text-slate-200">BibleGPT</h1>
+                <form onSubmit={handleSubmit} className="mb-5 flex flex-col items-center">
                     <input
                         required
                         type="text"
                         name="passage"
                         placeholder="Enter a Passage"
                         value={passageInput}
-                        className="input-bordered input mb-3 w-full max-w-xs text-center"
+                        className="input-bordered input-accent input mb-3 w-full max-w-xs text-center"
                         onChange={(e) => {
                             setPassageInput(e.target.value);
                         }}
@@ -67,20 +67,20 @@ export default function Home() {
                         name="question"
                         placeholder="Enter a question"
                         value={questionInput}
-                        className="input-bordered input mb-3 w-full max-w-xs text-center"
+                        className="input-bordered input-accent input mb-3 w-full max-w-xs text-center"
                         onChange={(e) => {
                             setQuestionInput(e.target.value);
                         }}
                     />
-                    <input type="submit" value="Submit" className="btn" />
+                    <input type="submit" value="Submit" className="btn-accent btn" />
                 </form>
-            </div>
 
-            <div className="">
-                <p className="prose">
-                    {answer}
-                    {loading && '...'}
-                </p>
+                <div>
+                    <p className="text-slate-400">
+                        {answer}
+                        {loading && '...'}
+                    </p>
+                </div>
             </div>
         </main>
     );
