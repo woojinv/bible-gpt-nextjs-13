@@ -26,7 +26,7 @@ export default function Home() {
             if (!response.ok) {
                 throw new Error(response.statusText);
             }
-            
+
             const data = response.body;
             if (!data) return;
 
@@ -78,7 +78,7 @@ export default function Home() {
                 <div>
                     <p className="text-slate-400">
                         {answer}
-                        {loading && '...'}
+                        {loading && '▋'}
                     </p>
                 </div>
             </div>
