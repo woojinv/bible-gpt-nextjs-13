@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { OpenAIStream } from '@/utils/OpenAIStream';
 
+import { sql } from '@vercel/postgres';
+
 if (!process.env.OPENAI_API_KEY) {
     throw new Error('Missing env var from OpenAI');
 }
@@ -24,6 +26,10 @@ export interface OpenAIStreamPayload {
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
     const { passage, question } = await req.json();
+
+    await sql`INSERT INTO form_data (passage, question)
+    VALUES (${passage}, ${question});`;
+
     const messages: chatGPTMessage[] = [
         {
             role: 'system',
