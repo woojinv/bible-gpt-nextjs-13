@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 
 export default function Home() {
@@ -81,6 +82,17 @@ export default function Home() {
                     </p>
                 </div>
             </div>
+            <footer>
+                <div className="flex justify-around">
+                    <Link href="" target="_blank">
+                        Submit Feedback
+                    </Link>
+
+                    <Link href="" target="_blank">
+                        Report a Bug
+                    </Link>
+                </div>
+            </footer>
         </main>
     );
 }
