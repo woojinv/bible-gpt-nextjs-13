@@ -51,7 +51,6 @@ export default function Home() {
                 <h1 className="mb-5 mt-10 text-5xl text-slate-200">BibleGPT</h1>
                 <form onSubmit={handleSubmit} className="mb-5 flex flex-col items-center">
                     <input
-                        required
                         type="text"
                         name="passage"
                         placeholder="Enter a Passage"
@@ -76,7 +75,7 @@ export default function Home() {
                 </form>
 
                 <div>
-                    <p className="text-slate-400 pb-5">
+                    <p className="pb-5 text-slate-400">
                         {answer}
                         {loading && '▋'}
                     </p>
