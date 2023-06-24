@@ -49,7 +49,7 @@ export default function Home() {
     return (
         <div className="flex min-h-screen flex-col bg-slate-800">
             <main className="mb-auto overflow-y-scroll px-5 text-center">
-                <div className="mx-auto max-w-xs">
+                <div className="mx-auto max-w-lg px-3">
                     <h1 className="mb-5 mt-10 text-5xl text-slate-200">BibleGPT</h1>
                     <form onSubmit={handleSubmit} className="mb-5 flex flex-col items-center">
                         <input
@@ -57,7 +57,7 @@ export default function Home() {
                             name="passage"
                             placeholder="Enter a Passage"
                             value={passageInput}
-                            className="input-bordered input-accent input mb-3 w-full max-w-xs text-center"
+                            className="input-bordered input-accent input mb-3 w-full text-center"
                             onChange={(e) => {
                                 setPassageInput(e.target.value);
                             }}
@@ -68,7 +68,7 @@ export default function Home() {
                             name="question"
                             placeholder="Enter a question"
                             value={questionInput}
-                            className="input-bordered input-accent input mb-3 w-full max-w-xs text-center"
+                            className="input-bordered input-accent input mb-3 w-full text-center"
                             onChange={(e) => {
                                 setQuestionInput(e.target.value);
                             }}
@@ -77,15 +77,15 @@ export default function Home() {
                     </form>
 
                     <div>
-                        <p className="text-slate-400 mb-16">
+                        <p className="text-slate-400">
                             {answer}
                             {loading && '▋'}
                         </p>
                     </div>
                 </div>
             </main>
-            <footer className="fixed bottom-0 inset-x-0 bg-slate-800">
-                <div className="flex justify-center pb-5">
+            <footer className=" bg-slate-800">
+                <div className="flex justify-center pb-5 pt-3">
                     <Link href="https://forms.gle/J3Evz9cXojCTKJ2g9" target="_blank" className="text-slate-300">
                         Submit Feedback / Report Bug
                     </Link>
