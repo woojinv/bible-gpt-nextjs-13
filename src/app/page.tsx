@@ -66,14 +66,17 @@ export default function Home() {
                             required
                             type="text"
                             name="question"
-                            placeholder="Enter a question"
+                            placeholder="Enter a Question"
                             value={questionInput}
                             className="input-bordered input-accent input mb-3 w-full text-center"
                             onChange={(e) => {
                                 setQuestionInput(e.target.value);
                             }}
                         />
-                        <input type="submit" value="Submit" className="btn-accent btn" />
+                        <div className="">
+                            <input type="button" value="Clear Question" className="btn-neutral btn mr-4" />
+                            <input type="submit" value="Ask" className="btn-accent btn" />
+                        </div>
                     </form>
 
                     <div>
