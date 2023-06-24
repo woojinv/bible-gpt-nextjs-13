@@ -1,9 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 export default function Home() {
+    const questionInputRef = useRef<HTMLInputElement | null>(null);
+
     const [loading, setLoading] = useState(false);
     const [passageInput, setPassageInput] = useState('');
     const [questionInput, setQuestionInput] = useState('');
@@ -64,6 +66,7 @@ export default function Home() {
                         />
                         <input
                             required
+                            ref={questionInputRef}
                             type="text"
                             name="question"
                             placeholder="Enter a Question"
@@ -74,7 +77,15 @@ export default function Home() {
                             }}
                         />
                         <div className="">
-                            <input type="button" value="Clear Question" className="btn-neutral btn mr-4" />
+                            <input
+                                type="button"
+                                value="Clear Question"
+                                className="btn-neutral btn mr-4"
+                                onClick={() => {
+                                    setQuestionInput('');
+                                    questionInputRef.current?.focus();
+                                }}
+                            />
                             <input type="submit" value="Ask" className="btn-accent btn" />
                         </div>
                     </form>
