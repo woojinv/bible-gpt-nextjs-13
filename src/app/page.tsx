@@ -47,52 +47,50 @@ export default function Home() {
     }
 
     return (
-        <main className="h-screen overflow-y-scroll bg-slate-800 px-5 text-center">
-            <div className="mx-auto max-w-xs">
-                <h1 className="mb-5 mt-10 text-5xl text-slate-200">BibleGPT</h1>
-                <form onSubmit={handleSubmit} className="mb-5 flex flex-col items-center">
-                    <input
-                        type="text"
-                        name="passage"
-                        placeholder="Enter a Passage"
-                        value={passageInput}
-                        className="input-bordered input-accent input mb-3 w-full max-w-xs text-center"
-                        onChange={(e) => {
-                            setPassageInput(e.target.value);
-                        }}
-                    />
-                    <input
-                        required
-                        type="text"
-                        name="question"
-                        placeholder="Enter a question"
-                        value={questionInput}
-                        className="input-bordered input-accent input mb-3 w-full max-w-xs text-center"
-                        onChange={(e) => {
-                            setQuestionInput(e.target.value);
-                        }}
-                    />
-                    <input type="submit" value="Submit" className="btn-accent btn" />
-                </form>
+        <div className="flex min-h-screen flex-col bg-slate-800">
+            <main className="mb-auto overflow-y-scroll px-5 text-center">
+                <div className="mx-auto max-w-xs">
+                    <h1 className="mb-5 mt-10 text-5xl text-slate-200">BibleGPT</h1>
+                    <form onSubmit={handleSubmit} className="mb-5 flex flex-col items-center">
+                        <input
+                            type="text"
+                            name="passage"
+                            placeholder="Enter a Passage"
+                            value={passageInput}
+                            className="input-bordered input-accent input mb-3 w-full max-w-xs text-center"
+                            onChange={(e) => {
+                                setPassageInput(e.target.value);
+                            }}
+                        />
+                        <input
+                            required
+                            type="text"
+                            name="question"
+                            placeholder="Enter a question"
+                            value={questionInput}
+                            className="input-bordered input-accent input mb-3 w-full max-w-xs text-center"
+                            onChange={(e) => {
+                                setQuestionInput(e.target.value);
+                            }}
+                        />
+                        <input type="submit" value="Submit" className="btn-accent btn" />
+                    </form>
 
-                <div>
-                    <p className="pb-5 text-slate-400">
-                        {answer}
-                        {loading && '▋'}
-                    </p>
+                    <div>
+                        <p className="pb-5 text-slate-400 ">
+                            {answer}
+                            {loading && '▋'}
+                        </p>
+                    </div>
                 </div>
-            </div>
-            <footer>
-                <div className="flex justify-around">
-                    <Link href="" target="_blank">
-                        Submit Feedback
-                    </Link>
-
-                    <Link href="" target="_blank">
-                        Report a Bug
+            </main>
+            <footer className="bg-slate-800">
+                <div className="flex justify-center pb-5">
+                    <Link href="https://forms.gle/J3Evz9cXojCTKJ2g9" target="_blank" className="text-slate-300">
+                        Submit Feedback / Report Bug
                     </Link>
                 </div>
             </footer>
-        </main>
+        </div>
     );
 }
