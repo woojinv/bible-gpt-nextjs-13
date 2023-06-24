@@ -77,14 +77,14 @@ export default function Home() {
                     </form>
 
                     <div>
-                        <p className="pb-5 text-slate-400 ">
+                        <p className="text-slate-400 mb-16">
                             {answer}
                             {loading && '▋'}
                         </p>
                     </div>
                 </div>
             </main>
-            <footer className="bg-slate-800">
+            <footer className="fixed bottom-0 inset-x-0 bg-slate-800">
                 <div className="flex justify-center pb-5">
                     <Link href="https://forms.gle/J3Evz9cXojCTKJ2g9" target="_blank" className="text-slate-300">
                         Submit Feedback / Report Bug
