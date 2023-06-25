@@ -100,7 +100,7 @@ export default function Home() {
             </main>
             <footer className=" bg-slate-800">
                 <div className="flex justify-center pb-5 pt-3">
-                    <Link href="https://forms.gle/J3Evz9cXojCTKJ2g9" target="_blank" className="text-slate-300">
+                    <Link href="https://docs.google.com/forms/d/e/1FAIpQLSeIWdJ1q1idLvdwIwoNVoFCkPtPo9EdKVwBhyMhREX_FlxuzQ/viewform?usp=sf_link" target="_blank" className="text-slate-300">
                         Submit Feedback / Report Bug
                     </Link>
                 </div>
