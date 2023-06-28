@@ -5,11 +5,19 @@ import { useState, useRef } from 'react';
 
 export default function Home() {
     const questionInputRef = useRef<HTMLInputElement | null>(null);
+    const readerRef = useRef<ReadableStreamDefaultReader | null>(null);
 
     const [loading, setLoading] = useState(false);
     const [passageInput, setPassageInput] = useState('');
     const [questionInput, setQuestionInput] = useState('');
     const [answer, setAnswer] = useState('');
+
+    const stopStream = () => {
+        if (readerRef.current) {
+            readerRef.current.cancel();
+            setLoading(false);
+        }
+    };
 
     async function handleSubmit(e: { preventDefault: () => void }) {
         e.preventDefault();
@@ -34,6 +42,7 @@ export default function Home() {
             if (!data) return;
 
             const reader = data.getReader();
+            readerRef.current = reader;
             const decoder = new TextDecoder();
             let done = false;
 
@@ -86,7 +95,13 @@ export default function Home() {
                                     questionInputRef.current?.focus();
                                 }}
                             />
-                            <input type="submit" value="Ask" className="btn-accent btn" disabled={loading}/>
+                            {!loading ? (
+                                <input type="submit" value="Ask" className="btn-accent btn" disabled={loading} />
+                            ) : (
+                                <button onClick={stopStream} className="btn-secondary btn">
+                                    Stop Loading
+                                </button>
+                            )}
                         </div>
                     </form>
 
