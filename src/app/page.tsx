@@ -86,7 +86,7 @@ export default function Home() {
                                     questionInputRef.current?.focus();
                                 }}
                             />
-                            <input type="submit" value="Ask" className="btn-accent btn" />
+                            <input type="submit" value="Ask" className="btn-accent btn" disabled={loading}/>
                         </div>
                     </form>
 
