@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 export default function Home() {
+    const passageInputRef = useRef<HTMLInputElement | null>(null);
     const questionInputRef = useRef<HTMLInputElement | null>(null);
     const readerRef = useRef<ReadableStreamDefaultReader | null>(null);
 
@@ -57,6 +58,10 @@ export default function Home() {
         } catch (err) {}
     }
 
+    useEffect(() => {
+        passageInputRef.current?.focus();
+    }, []);
+
     return (
         <div className="flex min-h-screen flex-col bg-slate-800">
             <main className="mb-auto overflow-y-scroll px-5 text-center">
@@ -64,6 +69,7 @@ export default function Home() {
                     <h1 className="mb-5 mt-10 text-5xl text-slate-200">BibleGPT</h1>
                     <form onSubmit={handleSubmit} className="mb-5 flex flex-col items-center">
                         <input
+                            ref={passageInputRef}
                             type="text"
                             name="passage"
                             placeholder="Enter a Passage"
