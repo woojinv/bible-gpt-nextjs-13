@@ -45,7 +45,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         messages,
         stream: true,
     };
-
     const stream = await OpenAIStream(payload);
     return new NextResponse(stream);
 }
