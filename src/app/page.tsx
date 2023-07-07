@@ -112,7 +112,7 @@ export default function Home() {
                     </form>
 
                     <div>
-                        <p className="text-slate-400">
+                        <p className="text-slate-400 mb-10">
                             {answer}
                             {loading && '▋'}
                         </p>
