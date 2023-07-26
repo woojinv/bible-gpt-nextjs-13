@@ -1,10 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
+import { OpenAIStream, StreamingTextResponse } from 'ai';
+import { Configuration, OpenAIApi } from 'openai-edge';
 
-import { OpenAIStream } from '@/utils/OpenAIStream';
+const config = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+});
 
-if (!process.env.OPENAI_API_KEY) {
-    throw new Error('Missing env var from OpenAI');
-}
+const openai = new OpenAIApi(config);
 
 export const runtime = 'edge';
 
@@ -16,13 +18,7 @@ export interface chatGPTMessage {
     content: string;
 }
 
-export interface OpenAIStreamPayload {
-    model: string;
-    messages: chatGPTMessage[];
-    stream: boolean;
-}
-
-export async function POST(req: NextRequest): Promise<NextResponse> {
+export async function POST(req: NextRequest): Promise<StreamingTextResponse> {
     const { passage, question } = await req.json();
 
     const messages: chatGPTMessage[] = [
@@ -40,11 +36,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         },
     ];
 
-    const payload: OpenAIStreamPayload = {
+    const response: StreamingTextResponse = await openai.createChatCompletion({
         model: 'gpt-4',
-        messages,
         stream: true,
-    };
-    const stream = await OpenAIStream(payload);
-    return new NextResponse(stream);
+        messages,
+    });
+    const stream = OpenAIStream(response);
+    return new StreamingTextResponse(stream);
 }
