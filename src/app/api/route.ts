@@ -44,14 +44,14 @@ export async function POST(req: NextRequest): Promise<StreamingTextResponse> {
         messages,
     });
 
+    let rowId = '';
+
     const stream = OpenAIStream(response, {
         onStart: async () => {
-            console.log('start stream');
-            await savePromptToDB(passage, question);
+            rowId = await savePromptToDB(passage, question);
         },
         onCompletion: async (completion: string) => {
-            console.log('stop stream');
-            await saveCompletionToDatabase(completion);
+            await saveCompletionToDatabase(completion, rowId);
         },
     });
 
@@ -59,17 +59,21 @@ export async function POST(req: NextRequest): Promise<StreamingTextResponse> {
 }
 
 const savePromptToDB = async (passage: string, question: string) => {
-    console.log(passage, '<<< passage');
-    console.log(question, '<<< question');
-    // const interactionId = await sql`
-    //     INSERT INTO interactions (passage, question)
-    //     VALUES (${passage}, ${question})
-    //     RETURNING id;
-    //     `;
+    const interactionResult = await sql`
+        INSERT INTO interactions (passage, question)
+        VALUES (${passage}, ${question})
+        RETURNING id;
+        `;
 
-    // console.log(interactionId, '<<< interactionId');
+    const rowId = interactionResult.rows[0].id;
+
+    return rowId;
 };
 
-const saveCompletionToDatabase = async (completion: string) => {
-    console.log(completion, '<<< completion');
+const saveCompletionToDatabase = async (completion: string, rowId: string) => {
+    await sql`
+        UPDATE interactions
+        SET answer = ${completion}
+        WHERE id = ${rowId}    
+    `;
 };

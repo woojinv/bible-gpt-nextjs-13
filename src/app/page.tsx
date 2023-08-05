@@ -24,6 +24,7 @@ export default function Home() {
         e.preventDefault();
         setAnswer('');
         setLoading(true);
+
         try {
             const response = await fetch('/api', {
                 method: 'POST',
@@ -35,22 +36,30 @@ export default function Home() {
                     question: questionInput,
                 }),
             });
+
             if (!response.ok) {
                 throw new Error(response.statusText);
             }
 
             const data = response.body;
+
             if (!data) return;
 
             const reader = data.getReader();
+
             readerRef.current = reader;
+
             const decoder = new TextDecoder();
+
             let done = false;
 
             while (!done) {
                 const { value, done: doneReading } = await reader.read();
+
                 done = doneReading;
+
                 const chunkValue = decoder.decode(value);
+                
                 setAnswer((prev) => prev + chunkValue);
             }
 
