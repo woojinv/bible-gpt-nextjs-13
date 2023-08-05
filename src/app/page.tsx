@@ -3,6 +3,36 @@
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
 
+import passages from './../passages.json';
+
+interface Passage {
+    'First Psalm'?: string;
+    'Second Psalm'?: string;
+    'Old Testament'?: string;
+    'New Testament'?: string;
+    Gospel?: string;
+}
+
+function DailyVerse() {
+    const [randomPassage, setRandomPassage] = useState('');
+
+    useEffect(() => {
+        const passagesTyped: Passage[] = passages as Passage[];
+        const index = Math.floor(Math.random() * passagesTyped.length);
+        const day = passagesTyped[index];
+
+        const keys = Object.keys(day) as (keyof Passage)[];
+        const keysIndex = Math.floor(Math.random() * keys.length);
+        const passageKey = keys[keysIndex];
+
+        const passage = day[passageKey];
+        if (passage) {
+            setRandomPassage(passage);
+        }
+    }, []);
+    return <div className="mb-10 text-slate-400">{randomPassage}</div>;
+}
+
 export default function Home() {
     const passageInputRef = useRef<HTMLInputElement | null>(null);
     const questionInputRef = useRef<HTMLInputElement | null>(null);
@@ -59,7 +89,7 @@ export default function Home() {
                 done = doneReading;
 
                 const chunkValue = decoder.decode(value);
-                
+
                 setAnswer((prev) => prev + chunkValue);
             }
 
@@ -120,14 +150,16 @@ export default function Home() {
                         </div>
                     </form>
 
+                    {!answer && <DailyVerse />}
                     <div>
-                        <p className="text-slate-400 mb-10">
+                        <p className="mb-10 text-slate-400">
                             {answer}
                             {loading && '▋'}
                         </p>
                     </div>
                 </div>
             </main>
+
             <footer className="footer bg-base-200 p-10 text-base-content">
                 <div>
                     <span className="footer-title">Contact</span>
