@@ -3,9 +3,9 @@
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
 
-import passages from './../passages.json';
+import bookOfPrayer from './../bookOfPrayer.json';
 
-interface Passage {
+interface PrayerPassages {
     'First Psalm'?: string;
     'Second Psalm'?: string;
     'Old Testament'?: string;
@@ -17,19 +17,20 @@ function DailyVerse() {
     const [randomPassage, setRandomPassage] = useState('');
 
     useEffect(() => {
-        const passagesTyped: Passage[] = passages as Passage[];
-        const index = Math.floor(Math.random() * passagesTyped.length);
-        const day = passagesTyped[index];
+        const PrayerPassagesTyped: PrayerPassages[] = bookOfPrayer as PrayerPassages[];
+        const i = Math.floor(Math.random() * PrayerPassagesTyped.length);
+        const prayerPassages = PrayerPassagesTyped[i];
 
-        const keys = Object.keys(day) as (keyof Passage)[];
-        const keysIndex = Math.floor(Math.random() * keys.length);
-        const passageKey = keys[keysIndex];
+        const passageCategories = Object.keys(prayerPassages) as (keyof PrayerPassages)[];
+        const j = Math.floor(Math.random() * passageCategories.length);
+        const passageCategory = passageCategories[j];
 
-        const passage = day[passageKey];
+        const passage = prayerPassages[passageCategory];
         if (passage) {
             setRandomPassage(passage);
         }
     }, []);
+    
     return <div className="mb-10 text-slate-400">{randomPassage}</div>;
 }
 
