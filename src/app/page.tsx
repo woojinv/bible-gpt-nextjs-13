@@ -20,7 +20,7 @@ function DailyVerse() {
         try {
             const response = await fetch(`https://api.esv.org/v3/passage/html/?q=${passage}`, {
                 headers: {
-                    Authorization: 'Token babc8a297a91a09361f8e665c8a57b2c31c196da',
+                    Authorization: `Token ${process.env.NEXT_PUBLIC_ESV_API_KEY}`,
                 },
             });
 
