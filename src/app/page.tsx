@@ -16,6 +16,31 @@ interface PrayerPassages {
 function DailyVerse() {
     const [randomPassage, setRandomPassage] = useState('');
 
+    const fetchPassage = async (passage: string) => {
+        try {
+            const response = await fetch(`https://api.esv.org/v3/passage/html/?q=${passage}`, {
+                headers: {
+                    Authorization: 'Token babc8a297a91a09361f8e665c8a57b2c31c196da',
+                },
+            });
+
+            const result = await response.json();
+            const html = result.passages[0];
+            const parser = new DOMParser();
+
+            const doc = parser.parseFromString(html, 'text/html');
+
+            doc.querySelectorAll('a').forEach((link) => {
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+            });
+
+            setRandomPassage(doc.body.innerHTML);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     useEffect(() => {
         const PrayerPassagesTyped: PrayerPassages[] = bookOfPrayer as PrayerPassages[];
         const i = Math.floor(Math.random() * PrayerPassagesTyped.length);
@@ -27,11 +52,11 @@ function DailyVerse() {
 
         const passage = prayerPassages[passageCategory];
         if (passage) {
-            setRandomPassage(passage);
+            fetchPassage(passage);
         }
     }, []);
-    
-    return <div className="mb-10 text-slate-400">{randomPassage}</div>;
+
+    return <div className="mb-10 text-slate-400" dangerouslySetInnerHTML={{ __html: randomPassage }} />;
 }
 
 export default function Home() {
