@@ -13,48 +13,25 @@ interface PrayerPassages {
     Gospel?: string;
 }
 
-function DailyVerse() {
-    const [randomPassage, setRandomPassage] = useState('');
+async function DailyVerse() {
+    const PrayerPassagesTyped: PrayerPassages[] = bookOfPrayer as PrayerPassages[];
+    const i = Math.floor(Math.random() * PrayerPassagesTyped.length);
+    const prayerPassages = PrayerPassagesTyped[i];
 
-    const fetchPassage = async (passage: string) => {
-        try {
-            const response = await fetch(`https://api.esv.org/v3/passage/html/?q=${passage}`, {
-                headers: {
-                    Authorization: `Token ${process.env.NEXT_PUBLIC_ESV_API_KEY}`,
-                },
-            });
+    const passageCategories = Object.keys(prayerPassages) as (keyof PrayerPassages)[];
+    const j = Math.floor(Math.random() * passageCategories.length);
+    const passageCategory = passageCategories[j];
 
-            const result = await response.json();
-            const html = result.passages[0];
-            const parser = new DOMParser();
+    const passage = prayerPassages[passageCategory];
+    if (!passage) {
+        return <div>Loading...</div>;
+    }
 
-            const doc = parser.parseFromString(html, 'text/html');
+    const res = await fetch(`/dailyPassage/${passage}`);
 
-            doc.querySelectorAll('a').forEach((link) => {
-                link.target = '_blank';
-                link.rel = 'noopener noreferrer';
-            });
+    const dailyPassage = res.json();
 
-            setRandomPassage(doc.body.innerHTML);
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
-    useEffect(() => {
-        const PrayerPassagesTyped: PrayerPassages[] = bookOfPrayer as PrayerPassages[];
-        const i = Math.floor(Math.random() * PrayerPassagesTyped.length);
-        const prayerPassages = PrayerPassagesTyped[i];
-
-        const passageCategories = Object.keys(prayerPassages) as (keyof PrayerPassages)[];
-        const j = Math.floor(Math.random() * passageCategories.length);
-        const passageCategory = passageCategories[j];
-
-        const passage = prayerPassages[passageCategory];
-        if (passage) {
-            fetchPassage(passage);
-        }
-    }, []);
+    const fetchPassage = async (passage: string) => {};
 
     return <div className="mb-10 text-slate-400" dangerouslySetInnerHTML={{ __html: randomPassage }} />;
 }
