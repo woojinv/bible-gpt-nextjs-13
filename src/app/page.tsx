@@ -14,26 +14,37 @@ interface PrayerPassages {
 }
 
 async function DailyVerse() {
-    const PrayerPassagesTyped: PrayerPassages[] = bookOfPrayer as PrayerPassages[];
-    const i = Math.floor(Math.random() * PrayerPassagesTyped.length);
-    const prayerPassages = PrayerPassagesTyped[i];
+    const [randomPassage, setRandomPassage] = useState('');
 
-    const passageCategories = Object.keys(prayerPassages) as (keyof PrayerPassages)[];
-    const j = Math.floor(Math.random() * passageCategories.length);
-    const passageCategory = passageCategories[j];
+    const fetchRandomPassage = async () => {
+        const PrayerPassagesTyped: PrayerPassages[] = bookOfPrayer as PrayerPassages[];
+        const i = Math.floor(Math.random() * PrayerPassagesTyped.length);
+        const prayerPassages = PrayerPassagesTyped[i];
 
-    const passage = prayerPassages[passageCategory];
-    if (!passage) {
-        return <div>Loading...</div>;
-    }
+        const passageCategories = Object.keys(prayerPassages) as (keyof PrayerPassages)[];
+        const j = Math.floor(Math.random() * passageCategories.length);
+        const passageCategory = passageCategories[j];
 
-    const res = await fetch(`/dailyPassage/${passage}`);
+        const passage = prayerPassages[passageCategory];
+        if (!passage) {
+            return <div>Loading...</div>;
+        }
+        const res = await fetch(`/randomPassage/${passage}`);
 
-    const dailyPassage = res.json();
+        if (!res.ok) {
+            throw new Error('Failed fetching random passage');
+        }
 
-    const fetchPassage = async (passage: string) => {};
+        const passageHtml = await res.json();
+        console.log(passageHtml);
+        setRandomPassage(passageHtml);
+    };
 
-    return <div className="mb-10 text-slate-400" dangerouslySetInnerHTML={{ __html: randomPassage }} />;
+    useEffect(() => {
+        fetchRandomPassage();
+    }, []);
+
+    return <div>{randomPassage && <div className="mb-10 text-slate-400" dangerouslySetInnerHTML={{ __html: randomPassage }} />}</div>;
 }
 
 export default function Home() {
