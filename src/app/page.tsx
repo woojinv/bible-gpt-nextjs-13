@@ -13,28 +13,28 @@ interface PrayerPassages {
     Gospel?: string;
 }
 
-function DailyVerse() {
+function RandomPassage() {
     const [randomPassage, setRandomPassage] = useState('');
 
     const fetchRandomPassage = async () => {
         const PrayerPassagesTyped: PrayerPassages[] = bookOfPrayer as PrayerPassages[];
         const i = Math.floor(Math.random() * PrayerPassagesTyped.length);
-        const prayerPassages = PrayerPassagesTyped[i];
+        const passageReferences = PrayerPassagesTyped[i];
 
-        const passageCategories = Object.keys(prayerPassages) as (keyof PrayerPassages)[];
+        const passageCategories = Object.keys(passageReferences) as (keyof PrayerPassages)[];
         const j = Math.floor(Math.random() * passageCategories.length);
         const passageCategory = passageCategories[j];
 
-        const passage = prayerPassages[passageCategory];
+        const reference = passageReferences[passageCategory];
 
-        if (!passage) {
+        if (!reference) {
             return <div>Loading...</div>;
         }
 
-        const res = await fetch(`/randomPassage/${passage}`);
+        const res = await fetch(`/randomPassage/${reference}`);
 
         if (!res.ok) {
-            throw new Error('Failed fetching random passage');
+            throw new Error('Error fetching random passage');
         }
 
         const passageHtml = await res.json();
@@ -52,6 +52,8 @@ function DailyVerse() {
     useEffect(() => {
         fetchRandomPassage();
     }, []);
+
+    if (!randomPassage) return <div className="text-slate-400">Looking up a passage...</div>;
 
     return <div>{randomPassage && <div className="mb-10 text-slate-400" dangerouslySetInnerHTML={{ __html: randomPassage }} />}</div>;
 }
@@ -173,7 +175,7 @@ export default function Home() {
                         </div>
                     </form>
 
-                    {!answer && <DailyVerse />}
+                    {!answer && <RandomPassage />}
                     <div>
                         <p className="mb-10 text-slate-400">
                             {answer}
