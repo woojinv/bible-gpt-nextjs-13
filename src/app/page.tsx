@@ -169,11 +169,11 @@ export default function Home() {
                         </div>
                     </form>
 
-                    {randomPassage && <div className="mb-10 text-slate-400" dangerouslySetInnerHTML={{ __html: randomPassage }} />}
+                    {randomPassage && <div className="mb-10 text-slate-400 text-justify" dangerouslySetInnerHTML={{ __html: randomPassage }} />}
                     {!randomPassage && !answer && !loading && <div className="text-slate-400">Looking up a passage...</div>}
-                    
+
                     <div>
-                        <p className="mb-10 text-slate-400">
+                        <p className="mb-10 text-slate-400 text-justify">
                             {answer}
                             {loading && '▋'}
                         </p>
