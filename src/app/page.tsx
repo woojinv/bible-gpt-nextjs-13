@@ -13,7 +13,7 @@ interface PrayerPassages {
     Gospel?: string;
 }
 
-async function DailyVerse() {
+function DailyVerse() {
     const [randomPassage, setRandomPassage] = useState('');
 
     const fetchRandomPassage = async () => {
@@ -26,9 +26,11 @@ async function DailyVerse() {
         const passageCategory = passageCategories[j];
 
         const passage = prayerPassages[passageCategory];
+
         if (!passage) {
             return <div>Loading...</div>;
         }
+
         const res = await fetch(`/randomPassage/${passage}`);
 
         if (!res.ok) {
@@ -36,8 +38,15 @@ async function DailyVerse() {
         }
 
         const passageHtml = await res.json();
-        console.log(passageHtml);
-        setRandomPassage(passageHtml);
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(passageHtml, 'text/html');
+
+        doc.querySelectorAll('a').forEach((link) => {
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+        });
+
+        setRandomPassage(doc.body.innerHTML);
     };
 
     useEffect(() => {
