@@ -13,51 +13,6 @@ interface PrayerPassages {
     Gospel?: string;
 }
 
-function RandomPassage() {
-    const [randomPassage, setRandomPassage] = useState('');
-
-    const fetchRandomPassage = async () => {
-        const PrayerPassagesTyped: PrayerPassages[] = bookOfPrayer as PrayerPassages[];
-        const i = Math.floor(Math.random() * PrayerPassagesTyped.length);
-        const passageReferences = PrayerPassagesTyped[i];
-
-        const passageCategories = Object.keys(passageReferences) as (keyof PrayerPassages)[];
-        const j = Math.floor(Math.random() * passageCategories.length);
-        const passageCategory = passageCategories[j];
-
-        const reference = passageReferences[passageCategory];
-
-        if (!reference) {
-            return <div>Loading...</div>;
-        }
-
-        const res = await fetch(`/randomPassage/${reference}`);
-
-        if (!res.ok) {
-            throw new Error('Error fetching random passage');
-        }
-
-        const passageHtml = await res.json();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(passageHtml, 'text/html');
-
-        doc.querySelectorAll('a').forEach((link) => {
-            link.target = '_blank';
-            link.rel = 'noopener noreferrer';
-        });
-
-        setRandomPassage(doc.body.innerHTML);
-    };
-
-    useEffect(() => {
-        fetchRandomPassage();
-    }, []);
-
-    if (!randomPassage) return <div className="text-slate-400">Looking up a passage...</div>;
-
-    return <div>{randomPassage && <div className="mb-10 text-slate-400" dangerouslySetInnerHTML={{ __html: randomPassage }} />}</div>;
-}
-
 export default function Home() {
     const passageInputRef = useRef<HTMLInputElement | null>(null);
     const questionInputRef = useRef<HTMLInputElement | null>(null);
@@ -67,6 +22,7 @@ export default function Home() {
     const [passageInput, setPassageInput] = useState('');
     const [questionInput, setQuestionInput] = useState('');
     const [answer, setAnswer] = useState('');
+    const [randomPassage, setRandomPassage] = useState('');
 
     const stopStream = () => {
         if (readerRef.current) {
@@ -77,6 +33,7 @@ export default function Home() {
 
     async function handleSubmit(e: { preventDefault: () => void }) {
         e.preventDefault();
+        setRandomPassage('');
         setAnswer('');
         setLoading(true);
 
@@ -122,8 +79,45 @@ export default function Home() {
         } catch (err) {}
     }
 
+    async function fetchRandomPassage() {
+        const PrayerPassagesTyped: PrayerPassages[] = bookOfPrayer as PrayerPassages[];
+        const i = Math.floor(Math.random() * PrayerPassagesTyped.length);
+        const passageReferences = PrayerPassagesTyped[i];
+
+        const passageCategories = Object.keys(passageReferences) as (keyof PrayerPassages)[];
+        const j = Math.floor(Math.random() * passageCategories.length);
+        const passageCategory = passageCategories[j];
+
+        const reference = passageReferences[passageCategory];
+
+        try {
+            const res = await fetch(`/randomPassage/${reference}`);
+
+            if (!res.ok) {
+                throw new Error('Error fetching random passage');
+            }
+
+            const passageHtml = await res.json();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(passageHtml, 'text/html');
+
+            doc.querySelectorAll('a').forEach((link) => {
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+            });
+
+            setRandomPassage(doc.body.innerHTML);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     useEffect(() => {
         passageInputRef.current?.focus();
+    }, []);
+
+    useEffect(() => {
+        fetchRandomPassage();
     }, []);
 
     return (
@@ -175,7 +169,9 @@ export default function Home() {
                         </div>
                     </form>
 
-                    {!answer && <RandomPassage />}
+                    {randomPassage && <div className="mb-10 text-slate-400" dangerouslySetInnerHTML={{ __html: randomPassage }} />}
+                    {!randomPassage && !answer && !loading && <div className="text-slate-400">Looking up a passage...</div>}
+                    
                     <div>
                         <p className="mb-10 text-slate-400">
                             {answer}

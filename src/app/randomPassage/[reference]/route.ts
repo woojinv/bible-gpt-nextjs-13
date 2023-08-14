@@ -4,7 +4,7 @@ export async function GET(req: NextRequest, context: { params: { reference: stri
     try {
         const { reference } = context.params;
 
-        const response = await fetch(`https://api.esv.org/v3/passage/html/?q=${reference}`, {
+        const response = await fetch(`https://api.esv.org/v3/passage/html/?q=${reference}&include-footnotes=false`, {
             headers: {
                 Authorization: `Token ${process.env.ESV_API_KEY}`,
             },
@@ -15,6 +15,7 @@ export async function GET(req: NextRequest, context: { params: { reference: stri
 
         return NextResponse.json(passageHtml);
     } catch (err) {
-        console.log(err);
+        console.error(err);
+        return NextResponse.error();
     }
 }
