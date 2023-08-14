@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { JSDOM } from 'jsdom';
 
 export async function GET(req: NextRequest, context: { params: { reference: string } }) {
     try {
@@ -11,9 +12,20 @@ export async function GET(req: NextRequest, context: { params: { reference: stri
         });
 
         const result = await response.json();
+
         const passageHtml = result.passages[0];
 
-        return NextResponse.json(passageHtml);
+        const dom = new JSDOM(passageHtml);
+        
+        const document = dom.window.document;
+        const links = document.querySelectorAll('a');
+
+        links.forEach((link: { target: string; rel: string }) => {
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+        });
+
+        return NextResponse.json(document.body.innerHTML);
     } catch (err) {
         console.error(err);
         return NextResponse.error();

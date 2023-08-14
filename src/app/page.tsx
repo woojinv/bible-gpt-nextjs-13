@@ -98,15 +98,8 @@ export default function Home() {
             }
 
             const passageHtml = await res.json();
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(passageHtml, 'text/html');
 
-            doc.querySelectorAll('a').forEach((link) => {
-                link.target = '_blank';
-                link.rel = 'noopener noreferrer';
-            });
-
-            setRandomPassage(doc.body.innerHTML);
+            setRandomPassage(passageHtml);
         } catch (err) {
             console.error(err);
         }
@@ -169,11 +162,11 @@ export default function Home() {
                         </div>
                     </form>
 
-                    {randomPassage && <div className="mb-10 text-slate-400 text-justify" dangerouslySetInnerHTML={{ __html: randomPassage }} />}
+                    {randomPassage && <div className="mb-10 text-justify text-slate-400" dangerouslySetInnerHTML={{ __html: randomPassage }} />}
                     {!randomPassage && !answer && !loading && <div className="text-slate-400">Looking up a passage...</div>}
 
                     <div>
-                        <p className="mb-10 text-slate-400 text-justify">
+                        <p className="mb-10 text-justify text-slate-400">
                             {answer}
                             {loading && '▋'}
                         </p>
