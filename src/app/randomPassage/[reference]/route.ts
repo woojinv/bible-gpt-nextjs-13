@@ -16,13 +16,23 @@ export async function GET(req: NextRequest, context: { params: { reference: stri
         const passageHtml = result.passages[0];
 
         const dom = new JSDOM(passageHtml);
-        
-        const document = dom.window.document;
-        const links = document.querySelectorAll('a');
 
+        const document = dom.window.document;
+
+        const links = document.querySelectorAll('a');
         links.forEach((link: { target: string; rel: string }) => {
             link.target = '_blank';
             link.rel = 'noopener noreferrer';
+        });
+
+        const paragraphs = document.querySelectorAll('p');
+        paragraphs.forEach((p) => {
+            p.style.marginBottom = '16px';
+        });
+
+        const h2s = document.querySelectorAll('h2');
+        h2s.forEach((h2) => {
+            h2.style.fontSize = '26px';
         });
 
         return NextResponse.json(document.body.innerHTML);
