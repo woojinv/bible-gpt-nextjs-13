@@ -48,10 +48,14 @@ export async function POST(req: NextRequest): Promise<StreamingTextResponse> {
 
     const stream = OpenAIStream(response, {
         onStart: async () => {
-            rowId = await savePromptToDB(passage, question);
+            if (question) {
+                rowId = await savePromptToDB(passage, question);
+            }
         },
         onCompletion: async (completion: string) => {
-            await saveCompletionToDatabase(completion, rowId);
+            if (rowId) {
+                await saveCompletionToDatabase(completion, rowId);
+            }
         },
     });
 

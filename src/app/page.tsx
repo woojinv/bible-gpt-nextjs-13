@@ -31,10 +31,29 @@ export default function Home() {
         }
     };
 
+    async function fetchPassage(reference: string) {
+        try {
+            const res = await fetch(`/randomPassage/${reference}`);
+
+            if (!res.ok) {
+                throw new Error('Error fetching random passage');
+            }
+
+            const passageHtml = await res.json();
+
+            setRandomPassage(passageHtml);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     async function handleSubmit(e: { preventDefault: () => void }) {
         e.preventDefault();
         setRandomPassage('');
         setAnswer('');
+
+        fetchPassage(passageInput);
+        
         setLoading(true);
 
         try {
@@ -76,7 +95,9 @@ export default function Home() {
             }
 
             setLoading(false);
-        } catch (err) {}
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     async function fetchRandomPassage() {
@@ -131,7 +152,6 @@ export default function Home() {
                             }}
                         />
                         <input
-                            required
                             ref={questionInputRef}
                             type="text"
                             name="question"
