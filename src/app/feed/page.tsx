@@ -21,13 +21,13 @@ export default async function Feed() {
             {interactions.map((interaction) => (
                 <div key={interaction.id} className="collapse bg-base-200">
                     <input type="checkbox" />
-                    <div className="collapse-title text-xl font-medium">
-                        <p>Passage: {interaction.passage}</p>
-                        <p>Question: {interaction.question}</p>
-                        <p>Date: {interaction.timestamp}</p>
+                    <div className="collapse-title text-xl">
+                        <p className="text-xl">{interaction.question}</p>
+                        <p className="text-sm">Passage: {interaction.passage}</p>
+                        <p className="text-xs">Date: {interaction.timestamp}</p>
                     </div>
                     <div className="collapse-content">
-                        <p>Answer: {interaction.answer}</p>
+                        <p>{interaction.answer}</p>
                     </div>
 
                     <br />
