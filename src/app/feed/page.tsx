@@ -1,9 +1,7 @@
 import { sql } from '@vercel/postgres';
 
 async function getInteractions() {
-    console.log('hit getInteractions');
     const res = await sql`SELECT * FROM interactions`;
-    console.log(res.rows, '<<< res. rows');
     const interactions = res.rows.sort((a, b) => b.timestamp - a.timestamp);
     return interactions;
 }
