@@ -20,7 +20,7 @@ export default function Feed() {
             if (!res.ok) {
                 throw new Error('Error retrieving Interactions on the server');
             }
-            
+
             const data: Interaction[] = await res.json();
 
             setInteractions(data);
@@ -34,11 +34,10 @@ export default function Feed() {
         fetchInteractions();
     }, []);
 
-    if (!interactions) return <div>Loading</div>;
+    if (!interactions) return <div className="bg-base-200">Loading</div>;
 
     return (
         <>
-            <h1>Interactions</h1>
             {interactions.map((interaction) => (
                 <div key={interaction.id} className="collapse bg-base-200">
                     <input type="checkbox" />
