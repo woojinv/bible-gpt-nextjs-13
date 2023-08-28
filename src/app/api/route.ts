@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { OpenAIStream, StreamingTextResponse } from 'ai';
 import { Configuration, OpenAIApi } from 'openai-edge';
 
@@ -21,49 +21,54 @@ export interface chatGPTMessage {
 }
 
 export async function POST(req: NextRequest): Promise<StreamingTextResponse> {
-    const { passage, question } = await req.json();
+    try {
+        const { passage, question } = await req.json();
 
-    const messages: chatGPTMessage[] = [
-        {
-            role: 'system',
-            content:
-                'You are a bible study assistant. You will be given a reference to a passage in the bible, as well as a question to answer regarding that passage. You will provide a succint answer to the question. Your answer will be hermeneutic. You will provide the bible reference from which you devised your answer. You will use the ESV version to determine your answers and for any quotations and/or references you provide. You will NOT directly re-quote the passage that was provided, as this would be redundant.',
-        },
-        {
-            role: 'user',
-            content: `
-        passage: ${passage}
-        question: ${question}
-        `,
-        },
-    ];
+        const messages: chatGPTMessage[] = [
+            {
+                role: 'system',
+                content:
+                    'You are a bible study assistant. You will be given a reference to a passage in the bible, as well as a question to answer regarding that passage. You will provide a succint answer to the question. Your answer will be hermeneutic. You will provide the bible reference from which you devised your answer. You will use the ESV version to determine your answers and for any quotations and/or references you provide. You will NOT directly re-quote the passage that was provided, as this would be redundant.',
+            },
+            {
+                role: 'user',
+                content: `
+            passage: ${passage}
+            question: ${question}
+            `,
+            },
+        ];
 
-    const response: StreamingTextResponse = await openai.createChatCompletion({
-        model: 'gpt-4',
-        stream: true,
-        messages,
-    });
+        const response: StreamingTextResponse = await openai.createChatCompletion({
+            model: 'gpt-4',
+            stream: true,
+            messages,
+        });
 
-    let rowId = '';
+        let rowId = '';
 
-    const stream = OpenAIStream(response, {
-        onStart: async () => {
-            if (process.env.NODE_ENV === 'development') return;
+        const stream = OpenAIStream(response, {
+            onStart: async () => {
+                if (process.env.NODE_ENV === 'development') return;
 
-            if (question) {
-                rowId = await savePromptToDB(passage, question);
-            }
-        },
-        onCompletion: async (completion: string) => {
-            if (process.env.NODE_ENV === 'development') return;
+                if (question) {
+                    rowId = await savePromptToDB(passage, question);
+                }
+            },
+            onCompletion: async (completion: string) => {
+                if (process.env.NODE_ENV === 'development') return;
 
-            if (rowId) {
-                await saveCompletionToDatabase(completion, rowId);
-            }
-        },
-    });
+                if (rowId) {
+                    await saveCompletionToDatabase(completion, rowId);
+                }
+            },
+        });
 
-    return new StreamingTextResponse(stream);
+        return new StreamingTextResponse(stream);
+    } catch (err) {
+        console.error();
+        return NextResponse.error();
+    }
 }
 
 const savePromptToDB = async (passage: string, question: string) => {

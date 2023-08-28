@@ -44,6 +44,7 @@ export default function Home() {
             setRandomPassage(passageHtml);
         } catch (err) {
             console.error(err);
+            window.alert('Error retrieving passage. Please refresh, or submit a bug report');
         }
     }
 
@@ -53,7 +54,7 @@ export default function Home() {
         setAnswer('');
 
         fetchPassage(passageInput);
-        
+
         setLoading(true);
 
         try {
@@ -97,6 +98,7 @@ export default function Home() {
             setLoading(false);
         } catch (err) {
             console.error(err);
+            window.alert('Error answer your question. Please try again, or submit a bug report');
         }
     }
 

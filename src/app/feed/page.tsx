@@ -14,10 +14,20 @@ export default function Feed() {
     const [interactions, setInteractions] = useState<Interaction[] | undefined>();
 
     async function fetchInteractions() {
-        const res = await fetch('/interactions');
-        const data: Interaction[] = await res.json();
+        try {
+            const res = await fetch('/interactions');
 
-        setInteractions(data);
+            if (!res.ok) {
+                throw new Error('Error retrieving Interactions on the server');
+            }
+            
+            const data: Interaction[] = await res.json();
+
+            setInteractions(data);
+        } catch (err) {
+            console.error(err);
+            window.alert('Error retrieving interactions. Please try again, or report this bug');
+        }
     }
 
     useEffect(() => {
