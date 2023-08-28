@@ -1,19 +1,22 @@
-import { sql } from '@vercel/postgres';
+'use client';
 
-async function getInteractions() {
-    // TODO: try/catch block
-    const res = await sql`SELECT * FROM interactions ORDER BY timestamp DESC LIMIT 25`;
-    const interactions = res.rows;
+import { useEffect, useState } from 'react';
 
-    interactions.forEach((interaction) => {
-        interaction.timestamp = interaction.timestamp.toString();
-    });
+export default function Feed() {
+    const [interactions, setInteractions] = useState();
 
-    return interactions;
-}
+    async function fetchInteractions() {
+        const res = await fetch('/interactions');
+        const data = await res.json();
+        console.log(data, '<<< data');
+        setInteractions(data);
+    }
 
-export default async function Feed() {
-    const interactions = await getInteractions();
+    useEffect(() => {
+        fetchInteractions();
+    }, []);
+
+    if (!interactions) return <div>Loading</div>;
 
     return (
         <>
