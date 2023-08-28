@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
     try {
-        const res = await sql`SELECT * FROM interactions ORDER BY timestamp DESC LIMIT 25`;
+        const res = await sql`SELECT * FROM interactions ORDER BY id DESC LIMIT 25`;
         const interactions = res.rows;
 
         interactions.forEach((interaction) => {
