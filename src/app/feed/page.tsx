@@ -15,7 +15,7 @@ export default function Feed() {
 
     async function fetchInteractions() {
         try {
-            const res = await fetch('/interactions');
+            const res = await fetch('/interactions', { cache: 'no-store' });
 
             if (!res.ok) {
                 throw new Error('Error retrieving Interactions on the server');
