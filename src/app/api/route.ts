@@ -68,21 +68,31 @@ export async function POST(req: NextRequest): Promise<StreamingTextResponse> {
 }
 
 const savePromptToDB = async (passage: string, question: string) => {
-    const interactionResult = await sql`
+    try {
+        const interactionResult = await sql`
         INSERT INTO interactions (passage, question)
         VALUES (${passage}, ${question})
         RETURNING id;
         `;
 
-    const rowId = interactionResult.rows[0].id;
+        const rowId = interactionResult.rows[0].id;
 
-    return rowId;
+        return rowId;
+    } catch (err) {
+        console.error(err);
+        throw new Error('Error in savePromptToDB()');
+    }
 };
 
 const saveCompletionToDatabase = async (completion: string, rowId: string) => {
-    await sql`
+    try {
+        await sql`
         UPDATE interactions
         SET answer = ${completion}
         WHERE id = ${rowId}    
     `;
+    } catch (err) {
+        console.error(err);
+        throw new Error('Error in saveCompletionToDatabase()');
+    }
 };
