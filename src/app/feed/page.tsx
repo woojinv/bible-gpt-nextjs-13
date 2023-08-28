@@ -2,13 +2,21 @@
 
 import { useEffect, useState } from 'react';
 
+type Interaction = {
+    id: string;
+    question: string;
+    passage: string;
+    timestamp: string;
+    answer: string;
+};
+
 export default function Feed() {
-    const [interactions, setInteractions] = useState();
+    const [interactions, setInteractions] = useState<Interaction[] | undefined>();
 
     async function fetchInteractions() {
         const res = await fetch('/interactions');
-        const data = await res.json();
-        console.log(data, '<<< data');
+        const data: Interaction[] = await res.json();
+
         setInteractions(data);
     }
 
