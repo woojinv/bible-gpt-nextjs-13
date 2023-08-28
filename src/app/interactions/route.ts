@@ -10,8 +10,6 @@ export async function GET() {
             interaction.timestamp = interaction.timestamp.toString();
         });
 
-        console.log(interactions, '<<< interactions');
-
         return NextResponse.json(interactions);
     } catch (err) {
         console.error(err);
