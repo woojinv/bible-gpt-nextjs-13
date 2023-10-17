@@ -55,6 +55,8 @@ export default function Home() {
 
         fetchPassage(passageInput);
 
+        if (questionInput.trim() === "") return;
+
         setLoading(true);
 
         try {
