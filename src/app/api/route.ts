@@ -49,6 +49,7 @@ export async function POST(req: NextRequest): Promise<StreamingTextResponse> {
 
         const stream = OpenAIStream(response, {
             onStart: async () => {
+                if (process.env.NODE_ENV === 'development') return;
                 if (question) {
                     rowId = await savePromptToDB(passage, question);
                 }
