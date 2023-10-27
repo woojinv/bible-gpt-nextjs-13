@@ -100,7 +100,7 @@ export default function Home() {
             setLoading(false);
         } catch (err) {
             console.error(err);
-            window.alert('Error answer your question. Please try again, or submit a bug report');
+            window.alert('Error answering your question. Please try again, or submit a bug report');
         }
     }
 
