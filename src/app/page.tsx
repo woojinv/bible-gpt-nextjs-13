@@ -32,7 +32,7 @@ export default function Home() {
 
   async function fetchPassage(reference: string) {
     try {
-      const res = await fetch(`/randomPassage/${reference}`);
+      const res = await fetch(`/api/randomPassage/${reference}`);
 
       if (!res.ok) {
         throw new Error('Error fetching random passage');
@@ -115,7 +115,7 @@ export default function Home() {
     const reference = passageReferences[passageCategory];
 
     try {
-      const res = await fetch(`/randomPassage/${reference}`);
+      const res = await fetch(`/api/randomPassage/${reference}`);
 
       if (!res.ok) {
         throw new Error('Error fetching random passage');
