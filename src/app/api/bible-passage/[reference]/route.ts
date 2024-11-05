@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { JSDOM } from 'jsdom';
 
-export async function GET(req: NextRequest, context: { params: { reference: string } }) {
+export async function GET(req: NextRequest, context: { params: Promise<{ reference: string }> }) {
   try {
-    const { reference } = context.params;
+    const { reference } = await context.params;
 
     const response = await fetch(`https://api.esv.org/v3/passage/html/?q=${reference}&include-footnotes=false`, {
       headers: {
