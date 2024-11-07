@@ -138,64 +138,60 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="flex flex-col bg-slate-800">
-      <main className=" mb-auto min-h-screen px-5 text-center">
-        <div className="mx-auto max-w-lg px-3">
-          <h1 className="mb-5 mt-10 text-5xl text-slate-200">BibleGPT</h1>
-          <form onSubmit={handleSubmit} className="mb-5 flex flex-col items-center">
-            <input
-              ref={passageInputRef}
-              type="text"
-              name="passage"
-              placeholder="Enter a Passage"
-              value={passageInput}
-              className="input-bordered input-accent input mb-3 w-full text-center"
-              onChange={(e) => {
-                setPassageInput(e.target.value);
-              }}
-            />
-            <input
-              ref={questionInputRef}
-              type="text"
-              name="question"
-              placeholder="Enter a Question"
-              value={questionInput}
-              className="input-bordered input-accent input mb-3 w-full text-center"
-              onChange={(e) => {
-                setQuestionInput(e.target.value);
-              }}
-            />
-            <div className="">
-              <input
-                type="button"
-                value="Clear Question"
-                className="btn-neutral btn mr-4"
-                onClick={() => {
-                  setQuestionInput('');
-                  questionInputRef.current?.focus();
-                }}
-              />
-              {!loading ? (
-                <input type="submit" value="Ask" className="btn-accent btn" disabled={loading} />
-              ) : (
-                <button onClick={stopStream} className="btn-secondary btn">
-                  Stop Loading
-                </button>
-              )}
-            </div>
-          </form>
-
-          {randomPassage && <div className="mb-10 text-justify text-slate-400" dangerouslySetInnerHTML={{ __html: randomPassage }} />}
-          {!randomPassage && !answer && !loading && <div className="text-slate-400">Looking up a passage...</div>}
-
-          <div>
-            <p className="mb-10 text-justify text-slate-400">
-              {answer}
-              {loading && '▋'}
-            </p>
-          </div>
+    <>
+      <h1 className="mb-5 mt-10 text-5xl text-slate-200">BibleGPT</h1>
+      <form onSubmit={handleSubmit} className="mb-5 flex flex-col items-center">
+        <input
+          ref={passageInputRef}
+          type="text"
+          name="passage"
+          placeholder="Enter a Passage"
+          value={passageInput}
+          className="input-bordered input-accent input mb-3 w-full text-center"
+          onChange={(e) => {
+            setPassageInput(e.target.value);
+          }}
+        />
+        <input
+          ref={questionInputRef}
+          type="text"
+          name="question"
+          placeholder="Enter a Question"
+          value={questionInput}
+          className="input-bordered input-accent input mb-3 w-full text-center"
+          onChange={(e) => {
+            setQuestionInput(e.target.value);
+          }}
+        />
+        <div className="">
+          <input
+            type="button"
+            value="Clear Question"
+            className="btn-neutral btn mr-4"
+            onClick={() => {
+              setQuestionInput('');
+              questionInputRef.current?.focus();
+            }}
+          />
+          {!loading ? (
+            <input type="submit" value="Ask" className="btn-accent btn" disabled={loading} />
+          ) : (
+            <button onClick={stopStream} className="btn-secondary btn">
+              Stop Loading
+            </button>
+          )}
         </div>
-      </main>
-    </div>
+      </form>
+
+      {randomPassage && <div className="mb-10 text-justify text-slate-400" dangerouslySetInnerHTML={{ __html: randomPassage }} />}
+      {!randomPassage && !answer && !loading && <div className="text-slate-400">Looking up a passage...</div>}
+
+      <div>
+        <p className="mb-10 text-justify text-slate-400">
+          {answer}
+          {loading && '▋'}
+        </p>
+      </div>
+    </>
   );
 }

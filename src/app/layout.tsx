@@ -19,7 +19,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className={inter.className}>
         <Header />
-        {children}
+        <div className="flex flex-col bg-slate-800">
+          <main className=" mb-auto min-h-screen px-5 text-center">
+            <div className="mx-auto max-w-lg px-3">{children}</div>
+          </main>
+        </div>
+
         <Analytics />
         <Footer />
       </body>
