@@ -139,7 +139,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col bg-slate-800">
-      <main className=" mb-auto min-h-screen overflow-y-scroll px-5 text-center">
+      <main className=" mb-auto min-h-screen px-5 text-center">
         <div className="mx-auto max-w-lg px-3">
           <h1 className="mb-5 mt-10 text-5xl text-slate-200">BibleGPT</h1>
           <form onSubmit={handleSubmit} className="mb-5 flex flex-col items-center">
